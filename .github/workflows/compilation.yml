@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
   repository_dispatch:
-    types: [run_build, run_release, run_build_ps2sdk, run_release_ps2sdk, run_build_ps2client, run_release_ps2client]
+    types: [run_build, run_release]
 
 jobs:
   build:
@@ -34,3 +34,33 @@ jobs:
         export PS4TOOLCHAIN=$ORBISDEV/toolchain
         export PATH=$ORBISDEV/bin:$PS4TOOLCHAIN/x86_64-pc-freebsd9/bin:$PS4TOOLCHAIN/bin:$PATH
         ./toolchain.sh
+
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+    
+    - name: Compress orbisdev folder
+      run: |
+        tar -zcvf orbisdev.tar.gz orbisdev
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: orbisdev-${{ steps.slug.outputs.sha8 }}-${{matrix.os}}
+        path: orbisdev.tar.gz
+    
+    - name: Rename orbisdev.tar.gz file
+      run: |
+        mv orbisdev.tar.gz orbisdev-${{matrix.os}}.tar.gz
+    - name: Extract tag name
+      if: startsWith(github.ref, 'refs/tags/')
+      id: tag
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    
+    - name: Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: orbisdev-${{matrix.os}}.tar.gz
+        tag_name: ${{ steps.tag.outputs.VERSION }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
