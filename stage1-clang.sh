@@ -27,5 +27,5 @@ cmake \
     -G Ninja \
     ../llvm-project/llvm
     
-cmake -j${PROC_NR} --build . 
+cmake -j ${PROC_NR} --build . 
 cmake --build . --target install
