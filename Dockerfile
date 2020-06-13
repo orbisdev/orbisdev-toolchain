@@ -7,7 +7,7 @@ ENV PATH $ORBISDEV/bin:$PS4TOOLCHAIN/x86_64-pc-freebsd9/bin:$PS4TOOLCHAIN/bin:$P
 
 COPY . /src
 
-RUN apk add build-base git bash patch wget texinfo ninja
+RUN apk add build-base git bash patch wget texinfo ninja bison flex cmake clang
 RUN cd /src && ./toolchain.sh
 
 # Second stage of Dockerfile
