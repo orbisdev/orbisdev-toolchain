@@ -29,7 +29,6 @@ jobs:
         brew install texinfo bison flex ninja
 
     - name: Runs all the stages in the shell
-      if: matrix.os == 'ubuntu-latest'
       run: |
         # export ORBISDEV=$PWD/orbisdev
         # export PS4SDK=$ORBISDEV/ps4sdk

@@ -22,5 +22,6 @@ cmake \
     -DLLVM_LIT_ARGS="-v" \
     -G Ninja \
     ../llvm-project/llvm
+    
 cmake --build . 
 cmake --build . --target install
