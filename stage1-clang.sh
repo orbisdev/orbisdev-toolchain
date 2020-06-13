@@ -1,8 +1,7 @@
 #/bin/bash
 set -e
 
-ROOT=${PWD}
-PS4TOOLCHAIN=${ROOT}/toolchain
+PROC_NR=$(getconf _NPROCESSORS_ONLN)
 
 git clone --depth 1 https://github.com/llvm/llvm-project.git
 mkdir build
@@ -28,5 +27,5 @@ cmake \
     -G Ninja \
     ../llvm-project/llvm
     
-cmake --build . 
+cmake -j${PROC_NR} --build . 
 cmake --build . --target install

@@ -30,7 +30,7 @@ jobs:
 
     - name: Runs all the stages in the shell
       run: |
-        # export ORBISDEV=$PWD/orbisdev
-        # export PS4SDK=$ORBISDEV/ps4sdk
-        # export PATH=$PS4DEV/bin:$ORBISDEV/toolchain/x86_64-pc-freebsd9/bin:$ORBISDEV/toolchain/bin:$PATH
+        export ORBISDEV=/usr/local/orbisdev
+        export PS4TOOLCHAIN=$ORBISDEV/toolchain
+        export PATH=$ORBISDEV/bin:$PS4TOOLCHAIN/x86_64-pc-freebsd9/bin:$PS4TOOLCHAIN/bin:$PATH
         ./toolchain.sh
