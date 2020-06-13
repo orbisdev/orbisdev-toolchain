@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+    types: [run_build, run_release, run_build_ps2sdk, run_release_ps2sdk, run_build_ps2client, run_release_ps2client]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Ubuntu dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install texinfo bison flex findutils ninja-build
+    
+    - name: Install Mac dependencies
+      if: matrix.os == 'macOS-latest'
+      run: |
+        brew update
+        brew install texinfo bison flex
+
+    - name: Runs all the stages in the shell
+      run: |
+        export ORBISDEV=$PWD/orbisdev
+        export PS4SDK=$ORBISDEV/ps4sdk
+        export PATH=$PS4DEV/bin:$ORBISDEV/toolchain/x86_64-pc-freebsd9/bin:$ORBISDEV/toolchain/bin:$PATH
+        ./toolchain.sh
