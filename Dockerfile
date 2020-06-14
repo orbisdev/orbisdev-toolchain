@@ -9,7 +9,7 @@ COPY . /src
 
 RUN apk add build-base git bash patch wget texinfo ninja bison flex cmake python3 libc-dev clang clang-dev musl-dev gcc
 
-RUN cd /src && ./stage0-binutils.sh
+RUN cd /src && ./toolchain.sh
 
 # Second stage of Dockerfile
 FROM alpine:latest  
