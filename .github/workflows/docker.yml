@@ -24,10 +24,10 @@ jobs:
         export DISPATCH_ACTION="$(echo run_build)"
         echo "::set-env name=NEW_DISPATCH_ACTION::$DISPATCH_ACTION"
 
-    # - name: Repository Dispatch
-    #   uses: peter-evans/repository-dispatch@v1
-    #   with:
-    #     repository: ${{ github.repository_owner }}/ps2sdk
-    #     token: ${{ secrets.DISPATCH_TOKEN }}
-    #     event-type: ${{ env.NEW_DISPATCH_ACTION }}
-    #     client-payload: '{"ref": "${{ github.ref }}"}'
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        repository: ${{ github.repository_owner }}/orbisdev-sdkvanilla
+        token: ${{ secrets.DISPATCH_TOKEN }}
+        event-type: ${{ env.NEW_DISPATCH_ACTION }}
+        client-payload: '{"ref": "${{ github.ref }}"}'
