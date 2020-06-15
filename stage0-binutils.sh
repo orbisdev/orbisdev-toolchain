@@ -14,7 +14,7 @@ cd binutils-gdb
 	--enable-lto \
 	--enable-plugins \
 	--enable-poison-system-directories
-make -j ${PROC_NR}
+make -j ${PROC_NR} CFLAGS="$CFLAGS -O2" LDFLAGS="$LDFLAGS -s"
 make install
 
 cd ${PS4TOOLCHAIN}/bin
