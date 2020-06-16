@@ -9,7 +9,7 @@ cd build
 cmake \
     -DLLVM_ENABLE_PROJECTS='clang;lld;compiler-rt' \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=${PS4TOOLCHAIN}/ \
+    -DCMAKE_INSTALL_PREFIX=${ORBISDEV}/ \
     -DLLVM_ENABLE_ASSERTIONS=ON \
     -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-scei-ps4 \
     -DCMAKE_C_COMPILER=clang \
@@ -28,4 +28,4 @@ cmake \
     ../llvm-project/llvm
     
 cmake -j ${PROC_NR} --build . 
-cmake --build . --target install
+cmake --build . --target install -j ${PROC_NR}
