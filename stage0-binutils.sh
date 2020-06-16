@@ -13,7 +13,8 @@ cd binutils-gdb
 	--enable-ld \
 	--enable-lto \
 	--enable-plugins \
-	--enable-poison-system-directories
+	--enable-poison-system-directories  \
+	--program-prefix=orbis-
 make -j ${PROC_NR} CFLAGS="$CFLAGS -O2" LDFLAGS="$LDFLAGS -s"
 make install
 
