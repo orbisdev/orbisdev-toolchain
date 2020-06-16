@@ -16,7 +16,4 @@ cd binutils-gdb
 	--enable-poison-system-directories  \
 	--program-prefix=orbis-
 make -j ${PROC_NR} CFLAGS="$CFLAGS -O2" LDFLAGS="$LDFLAGS -s"
-make install
-
-cd ${PS4TOOLCHAIN}/bin
-#ln -s x86_64-pc-freebsd9-ld orbis-ld
+make install -j ${PROC_NR}

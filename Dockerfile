@@ -3,7 +3,7 @@ FROM alpine:latest
 
 ENV ORBISDEV /usr/local/orbisdev
 ENV PS4TOOLCHAIN $ORBISDEV/toolchain
-ENV PATH $ORBISDEV/bin:$PS4TOOLCHAIN/x86_64-pc-freebsd9/bin:$PS4TOOLCHAIN/bin:$PATH
+ENV PATH $ORBISDEV/bin:$PS4TOOLCHAIN/bin:$PATH
 
 COPY . /src
 
@@ -16,6 +16,6 @@ FROM alpine:latest
 
 ENV ORBISDEV /usr/local/orbisdev
 ENV PS4TOOLCHAIN $ORBISDEV/toolchain
-ENV PATH $ORBISDEV/bin:$PS4TOOLCHAIN/x86_64-pc-freebsd9/bin:$PS4TOOLCHAIN/bin:$PATH
+ENV PATH $ORBISDEV/bin:$PS4TOOLCHAIN/bin:$PATH
 
 COPY --from=0 ${ORBISDEV} ${ORBISDEV}
