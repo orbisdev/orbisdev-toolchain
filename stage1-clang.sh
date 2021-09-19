@@ -19,6 +19,14 @@ cmake \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DCMAKE_INSTALL_PREFIX=${ORBISDEV}/ \
     -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-scei-ps4 \
+    || exit 1
     
-cmake -j ${PROC_NR} --build . 
-cmake -j ${PROC_NR} --target install
+
+## Enter in build folder
+cd build || exit 1
+
+## Compile and install.
+make --quiet -j $PROC_NR clean   || { exit 1; }
+make --quiet -j $PROC_NR || { exit 1; }
+make --quiet -j $PROC_NR install-strip || { exit 1; }
+make --quiet -j $PROC_NR clean   || { exit 1; }
