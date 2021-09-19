@@ -6,7 +6,7 @@ ENV PATH $ORBISDEV/bin:$PATH
 
 COPY . /src
 
-RUN apk add build-base git bash patch wget texinfo ninja bison flex cmake python3 libc-dev clang clang-dev musl-dev gcc gmp-dev
+RUN apk add build-base git bash patch wget texinfo ninja bison flex cmake python3 py3-pip gmp-dev g++ gcc libxml2-dev make musl-dev ncurses-dev
 
 RUN cd /src && ./toolchain.sh
 
