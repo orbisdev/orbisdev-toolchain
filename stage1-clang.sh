@@ -3,29 +3,31 @@ set -e
 
 PROC_NR=$(getconf _NPROCESSORS_ONLN)
 
-git clone --depth 1 https://github.com/llvm/llvm-project.git
-mkdir build
-cd build
+REPO_URL="https://github.com/llvm/llvm-project"
+REPO_FOLDER="llvm-project"
+BRANCH_NAME="llvmorg-13.0.0-rc3"
+if test ! -d "$REPO_FOLDER"; then
+	git clone --depth 1 -b $BRANCH_NAME $REPO_URL && cd $REPO_FOLDER || exit 1
+else
+	cd $REPO_FOLDER && git fetch origin && git reset --hard origin/${BRANCH_NAME} || exit 1
+fi
+
 cmake \
-    -DLLVM_ENABLE_PROJECTS='clang;lld;compiler-rt' \
-    -DCMAKE_BUILD_TYPE=Release \
+    -G "Unix Makefiles" \
+    -S llvm -B build \
+    -DLLVM_TARGETS_TO_BUILD="X86" \
+    -DLLVM_ENABLE_PROJECTS="clang" \
+    -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DCMAKE_INSTALL_PREFIX=${ORBISDEV}/ \
-    -DLLVM_ENABLE_ASSERTIONS=ON \
     -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-scei-ps4 \
-    -DCMAKE_C_COMPILER=clang \
-    -DCMAKE_CXX_COMPILER=clang++ \
-    -DCLANG_DEFAULT_CXX_STDLIB=libc++ \
-    -DCOMPILER_RT_BUILD_BUILTINS:BOOL=ON \
-    -DCOMPILER_RT_BUILD_SANITIZERS:BOOL=OFF \
-    -DCOMPILER_RT_CAN_EXECUTE_TESTS:BOOL=OFF \
-    -DCOMPILER_RT_INCLUDE_TESTS:BOOL=OFF \
-    -DCLANG_BUILD_EXAMPLES:BOOL=ON \
-    -DLLVM_TARGETS_TO_BUILD=X86 \
-    -DCMAKE_C_FLAGS="-Wdocumentation -Wno-documentation-deprecated-sync" \
-    -DCMAKE_CXX_FLAGS="-std=c++11 -Wdocumentation -Wno-documentation-deprecated-sync" \
-    -DLLVM_LIT_ARGS="-v" \
-    -G Ninja \
-    ../llvm-project/llvm
+    || exit 1
     
-cmake -j ${PROC_NR} --build . 
-cmake --build . --target install -j ${PROC_NR}
+
+## Enter in build folder
+cd build || exit 1
+
+## Compile and install.
+make --quiet -j $PROC_NR clean   || { exit 1; }
+make --quiet -j $PROC_NR || { exit 1; }
+make --quiet -j $PROC_NR install || { exit 1; }
+make --quiet -j $PROC_NR clean   || { exit 1; }
