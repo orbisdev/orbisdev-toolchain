@@ -3,16 +3,22 @@ set -e
 
 PROC_NR=$(getconf _NPROCESSORS_ONLN)
 
-git clone --depth 1 https://github.com/llvm/llvm-project.git
-mkdir build
-cd build
+REPO_URL="https://github.com/llvm/llvm-project"
+REPO_FOLDER="llvm-project"
+BRANCH_NAME="llvmorg-13.0.0-rc3"
+if test ! -d "$REPO_FOLDER"; then
+	git clone --depth 1 -b $BRANCH_NAME $REPO_URL && cd $REPO_FOLDER || exit 1
+else
+	cd $REPO_FOLDER && git fetch origin && git reset --hard origin/${BRANCH_NAME} || exit 1
+fi
+
 cmake \
-    -DLLVM_ENABLE_PROJECTS='clang;lld;compiler-rt' \
-    -DCMAKE_BUILD_TYPE=Release \
+    -G "Unix Makefiles" -DLLVM_TARGETS_TO_BUILD="X86" \
+    -S llvm -B build \
+    -DLLVM_ENABLE_PROJECTS="clang" \
+    -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DCMAKE_INSTALL_PREFIX=${ORBISDEV}/ \
     -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-scei-ps4 \
-    -G Ninja \
-    ../llvm-project/llvm
     
 cmake -j ${PROC_NR} --build . 
-cmake --build . --target install -j ${PROC_NR}
+cmake -j ${PROC_NR} --target install
