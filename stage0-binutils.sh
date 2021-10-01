@@ -20,6 +20,7 @@ TARG_XTRA_OPTS=""
 ./configure \
   --quiet \
   --prefix="${ORBISDEV}" \
+  --program-prefix=orbis- \
   --target="$TARGET" \
   --disable-sim \
   --disable-nls \
