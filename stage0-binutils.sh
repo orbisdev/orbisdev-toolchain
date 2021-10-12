@@ -24,6 +24,7 @@ TARG_XTRA_OPTS=""
   --target="$TARGET" \
   --disable-sim \
   --disable-nls \
+  --with-sysroot=/ \
   $TARG_XTRA_OPTS || { exit 1; }
 
 ## Compile and install.
