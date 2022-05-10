@@ -5,7 +5,7 @@ PROC_NR=$(getconf _NPROCESSORS_ONLN)
 
 REPO_URL="https://github.com/llvm/llvm-project"
 REPO_FOLDER="llvm-project"
-BRANCH_NAME="llvmorg-13.0.0"
+BRANCH_NAME="llvmorg-14.0.3"
 if test ! -d "$REPO_FOLDER"; then
 	git clone --depth 1 -b $BRANCH_NAME $REPO_URL && cd $REPO_FOLDER || exit 1
 else
