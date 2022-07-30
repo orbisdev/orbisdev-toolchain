@@ -10,7 +10,7 @@ BRANCH_NAME="binutils-2_38"
 if test ! -d "$REPO_FOLDER"; then
 	git clone --depth 1 -b $BRANCH_NAME $REPO_URL && cd $REPO_FOLDER || exit 1
 else
-	cd $REPO_FOLDER && git fetch origin && git reset --hard origin/${BRANCH_NAME} || exit 1
+	cd $REPO_FOLDER && git fetch origin && git checkout ${BRANCH_NAME} || exit 1
 fi	
 	
 TARGET="x86_64-pc-freebsd9"
